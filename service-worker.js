@@ -1,12 +1,12 @@
 const CACHE_NAME = "studyhero-cache-v1";
 const urlsToCache = [
-  "/",
-  "/index.html",
-  "/styles.css",
-  "/script.js",
-  "/icon-192.png",
-  "/icon-512.png",
-  "/screenshot1.png"
+  "/test-offline/",
+  "/test-offline/index.html",
+  "/test-offline/styles.css",
+  "/test-offline/script.js",
+  "/test-offline/icon-192.png",
+  "/test-offline/icon-512.png",
+  "/test-offline/screenshot1.png"
 ];
 
 self.addEventListener("install", (event) => {
