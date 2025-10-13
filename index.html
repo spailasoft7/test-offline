@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="shortcut icon" href="icon-192.png" type="image/x-icon">
+  <title>StudyHero</title>
+  
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f2f6fc;
+      color: #333;
+    }
+
+    h1 {
+      color: #0077cc;
+      text-align: center;
+    }
+
+    h2 {
+      color: #005999;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 48%;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      margin: 5px 1%;
+      cursor: pointer;
+      background-color: #0077cc;
+      color: white;
+      transition: background 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    #resultBox, #calcResult {
+      background: #f9f9f9;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    .result-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .error {
+      color: red;
+      font-style: italic;
+    }
+  </style>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+    
+  <h1>Welcome to StudyHero</h1>
+  <p>Learn offline. Study smart.</p>
+  <h1>StudyHero</h1>
+
+  <div class="container">
+    <h2>🔎 Ask a Question</h2>
+    <input type="text" id="queryInput" placeholder="e.g. What is the capital of France?" />
+    <div>
+      <button onclick="searchDuckDuckGo()">Search DuckDuckGo</button>
+      <button onclick="searchKwik()">Search Kwik API</button>
+    </div>
+    <div id="resultBox">
+      <div class="result-title">Result:</div>
+      <p id="resultText">Your answer will appear here.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <h2>🧮 Calculator</h2>
+    <input type="text" id="calcInput" placeholder="e.g. 7 * (3 + 2) - 4" />
+    <button style="width:100%" onclick="calculate()">Calculate</button>
+    <div id="calcResult">
+      <div class="result-title">Calculation:</div>
+      <p id="calcOutput">Result will appear here.</p>
+    </div>
+  </div>
+
+  <script>
+    // DuckDuckGo Instant Answer API
+    function searchDuckDuckGo() {
+      const query = document.getElementById("queryInput").value.trim();
+      const resultText = document.getElementById("resultText");
+
+      if (!query) {
+        resultText.innerHTML = "<span class='error'>Please enter a question first.</span>";
+        return;
+      }
+
+      const url = `https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const answer = data.AbstractText || data.Heading || "No answer found. Try something simpler.";
+          resultText.innerText = answer;
+        })
+        .catch(error => {
+          resultText.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+        });
+    }
+
+    // Placeholder for your Kwik API
+    function searchKwik() {
+      const query = document.getElementById("queryInput").value.trim();
+      const resultText = document.getElementById("resultText");
+
+      if (!query) {
+        resultText.innerHTML = "<span class='error'>Please enter a question first.</span>";
+        return;
+      }
+
+      const kwikUrl = `https://example.com/kwik-api/search?query=${encodeURIComponent(query)}`;
+
+      fetch(kwikUrl)
+        .then(res => res.json())
+        .then(data => {
+          const answer = data.answer || "No data from Kwik API.";
+          resultText.innerText = answer;
+        })
+        .catch(error => {
+          resultText.innerHTML = `<span class="error">Kwik API Error: ${error.message}</span>`;
+        });
+    }
+
+    // Simple Calculator
+    function calculate() {
+      const expression = document.getElementById("calcInput").value.trim();
+      const output = document.getElementById("calcOutput");
+
+      if (!expression) {
+        output.innerHTML = "<span class='error'>Enter an expression to calculate.</span>";
+        return;
+      }
+
+      try {
+        // Use Function instead of eval for slightly better safety
+        const result = Function(`"use strict"; return (${expression})`)();
+        output.innerText = `Answer: ${result}`;
+      } catch (e) {
+        output.innerHTML = "<span class='error'>Invalid math expression.</span>";
+      }
+    }
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
